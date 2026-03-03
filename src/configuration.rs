@@ -1,12 +1,10 @@
 use log::debug;
 
-use crate::fl_analyse;
 pub enum ConfigType {
     #[allow(missing_docs)]
     Help,
     #[allow(missing_docs)]
     Version,
-    FileAnalyse(Option<String>),
 }
 
 fn write_help() {
@@ -27,8 +25,6 @@ fn args_pars(args: Vec<String>) -> Result<ConfigType, String> {
         Some(p) => match p.as_str() {
             "-h" | "--help" | "h" | "help" => Ok(ConfigType::Help),
             "-v" | "--version" | "v" | "version" => Ok(ConfigType::Version),
-
-            "-f" | "--file" | "f" | "file" => Ok(ConfigType::FileAnalyse(args.get(1).cloned())),
 
             _ => Err(format!("not found this arguments\n{{ {} }}", args.concat())),
         },
@@ -59,6 +55,5 @@ pub fn run(config_type: ConfigType) -> Result<(), String> {
             println!("version: {}", env!("CARGO_PKG_VERSION"));
             Ok(())
         }
-        ConfigType::FileAnalyse(path) => fl_analyse::file_analyse(path),
     }
 }
