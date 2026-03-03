@@ -10,7 +10,7 @@ mod fl_analyse;
 fn is_file_exists(fl: &Path) -> Result<File, String> {
     match fl.exists() {
         true => Ok(File::open(fl).unwrap()),
-        false => Err("not correct path".to_string()),
+        false => Err("Not correct path".to_string()),
     }
 }
 
