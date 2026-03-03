@@ -7,7 +7,6 @@ pub enum ConfigType {
     #[allow(missing_docs)]
     Version,
     FileAnalyse(Option<String>),
-    FilesAnalyse(Option<Vec<String>>),
     Manual(Option<Vec<String>>),
 }
 
@@ -21,10 +20,6 @@ fn write_help() {
     println!("{:3} | {:25} {}", "-v", "--version", "version");
     println!("{:3} | {:25} {}", "-m", "--manual <OPT>", "manual");
     println!("{:3} | {:25} {}", "-f", "--file <PATH>", "File analyse");
-    println!(
-        "{:3} | {:25} {}",
-        "-fs", "--files <PATHes>", "Files analyse"
-    );
 }
 
 fn args_pars(args: Vec<String>) -> Result<ConfigType, String> {
@@ -40,10 +35,6 @@ fn args_pars(args: Vec<String>) -> Result<ConfigType, String> {
                 None => Ok(ConfigType::Manual(None)),
             },
             "-f" | "--file" | "f" | "file" => Ok(ConfigType::FileAnalyse(args.get(1).cloned())),
-            "-fs" | "--files" | "fs" | "files" => match args.get(1..) {
-                Some(pathes) => Ok(ConfigType::FilesAnalyse(Some(pathes.to_vec()))),
-                None => Ok(ConfigType::FilesAnalyse(None)),
-            },
 
             _ => Err(format!("not found this arguments\n{{ {} }}", args.concat())),
         },
@@ -75,7 +66,6 @@ pub fn run(config_type: ConfigType) -> Result<(), String> {
             Ok(())
         }
         ConfigType::FileAnalyse(path) => fl_analyse::file_analyse(path),
-        ConfigType::FilesAnalyse(files) => fl_analyse::files_analyse(files),
         ConfigType::Manual(opt) => manual::run(opt),
     }
 }
