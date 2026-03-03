@@ -1,13 +1,12 @@
 use log::debug;
 
-use crate::{fl_analyse, manual};
+use crate::fl_analyse;
 pub enum ConfigType {
     #[allow(missing_docs)]
     Help,
     #[allow(missing_docs)]
     Version,
     FileAnalyse(Option<String>),
-    Manual(Option<Vec<String>>),
 }
 
 fn write_help() {
@@ -18,7 +17,6 @@ fn write_help() {
     println!("KEYS:");
     println!("{:3} | {:25} {}", "-h", "--help", "this text");
     println!("{:3} | {:25} {}", "-v", "--version", "version");
-    println!("{:3} | {:25} {}", "-m", "--manual <OPT>", "manual");
     println!("{:3} | {:25} {}", "-f", "--file <PATH>", "File analyse");
 }
 
@@ -30,10 +28,6 @@ fn args_pars(args: Vec<String>) -> Result<ConfigType, String> {
             "-h" | "--help" | "h" | "help" => Ok(ConfigType::Help),
             "-v" | "--version" | "v" | "version" => Ok(ConfigType::Version),
 
-            "-m" | "--manual" | "m" | "manual" => match args.get(1..) {
-                Some(conf) => Ok(ConfigType::Manual(Some(conf.to_vec()))),
-                None => Ok(ConfigType::Manual(None)),
-            },
             "-f" | "--file" | "f" | "file" => Ok(ConfigType::FileAnalyse(args.get(1).cloned())),
 
             _ => Err(format!("not found this arguments\n{{ {} }}", args.concat())),
@@ -66,6 +60,5 @@ pub fn run(config_type: ConfigType) -> Result<(), String> {
             Ok(())
         }
         ConfigType::FileAnalyse(path) => fl_analyse::file_analyse(path),
-        ConfigType::Manual(opt) => manual::run(opt),
     }
 }

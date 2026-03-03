@@ -4,8 +4,6 @@ use std::{fs::File, path::Path};
 
 pub mod configuration;
 
-mod manual;
-
 mod fl_analyse;
 
 /// Проверка на существование файла
