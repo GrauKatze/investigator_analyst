@@ -3,7 +3,7 @@
 enum Config {
     Version,
     Help,
-    Command(Option<Vec<String>>),
+    _Command(Option<Vec<String>>),
 }
 
 impl Config {
